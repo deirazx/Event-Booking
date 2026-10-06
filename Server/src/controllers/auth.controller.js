@@ -15,11 +15,15 @@ const registerUser = async (req, res) => {
         const { name, email, password } = req.body;
 
         if (!name || !email || !password) {
-            return res.status(400).json({ message: "All fields are required" });
+            return res.status(400).json({
+                success: false,
+                message: "All fields are required"
+            });
         }
 
         if (password.length < 8) {
             return res.status(400).json({
+                success: false,
                 message: "Password must be at least 8 characters long"
             });
         }
@@ -30,6 +34,7 @@ const registerUser = async (req, res) => {
         const isUserExists = await User.findOne({ email: normalizedEmail });
         if (isUserExists) {
             return res.status(400).json({
+                success: false,
                 message: "User already exists with this email"
             });
         }
@@ -62,6 +67,7 @@ const registerUser = async (req, res) => {
     } catch (error) {
         console.error("Error while initiating registration:", error);
         return res.status(500).json({
+            success: false,
             message: "Error while sending registration OTP"
         });
     }
@@ -73,7 +79,10 @@ const verifyOtpAndRegister = async (req, res) => {
         const { name, email, password, otp } = req.body;
 
         if (!name || !email || !password || !otp) {
-            return res.status(400).json({ message: "All fields including OTP are required" });
+            return res.status(400).json({
+                success: false,
+                message: "All fields including OTP are required"
+            });
         }
 
         const normalizedEmail = email.toLowerCase().trim();
@@ -81,7 +90,10 @@ const verifyOtpAndRegister = async (req, res) => {
         // Check if user already registered in between
         const isUserExists = await User.findOne({ email: normalizedEmail });
         if (isUserExists) {
-            return res.status(400).json({ message: "User already exists" });
+            return res.status(400).json({
+                success: false,
+                message: "User already exists"
+            });
         }
 
         // Verify OTP
@@ -92,7 +104,10 @@ const verifyOtpAndRegister = async (req, res) => {
         });
 
         if (!existingOtp) {
-            return res.status(400).json({ message: "Invalid or expired OTP" });
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or expired OTP"
+            });
         }
 
         // Create user (password will be hashed by pre-save hook in User model)
@@ -121,6 +136,7 @@ const verifyOtpAndRegister = async (req, res) => {
     } catch (error) {
         console.error("Error while verifying OTP:", error);
         return res.status(500).json({
+            success: false,
             message: "Error while verifying OTP and creating user"
         });
     }
@@ -133,6 +149,7 @@ const loginUser = async (req, res) => {
 
         if (!email || !password) {
             return res.status(400).json({
+                success: false,
                 message: "Email & Password are required"
             });
         }
@@ -143,7 +160,8 @@ const loginUser = async (req, res) => {
 
         if (!user) {
             return res.status(401).json({
-                message: "Invalid email or password."
+                success: false,
+                message: "Invalid email or password"
             });
         }
 
@@ -152,7 +170,8 @@ const loginUser = async (req, res) => {
 
         if (!isValidPass) {
             return res.status(401).json({
-                message: "Invalid email or password."
+                success: false,
+                message: "Invalid email or password"
             });
         }
 
@@ -167,18 +186,21 @@ const loginUser = async (req, res) => {
         });
 
         return res.status(200).json({
-            message: "Login successful.",
+            success: true,
+            message: "Login successful",
+            token,
             user: {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                role: user.role,
-            },
+                role: user.role
+            }
         });
 
     } catch (error) {
         console.error("Something went wrong while logging in user:", error);
         return res.status(500).json({
+            success: false,
             message: "Something went wrong while logging in. Please try again."
         });
     }
@@ -194,27 +216,34 @@ const logoutUser = async (req, res) => {
         });
 
         return res.status(200).json({
-            message: "Logged out successfully."
+            success: true,
+            message: "Logged out successfully"
         });
     } catch (error) {
         console.error("Error logging out:", error);
-        return res.status(500).json({ message: "Failed to log out. Please try again." });
+        return res.status(500).json({
+            success: false,
+            message: "Failed to log out. Please try again."
+        });
     }
 };
 
+// 5. Get Current Logged-in User
 const getCurrentUser = async (req, res) => {
     try {
-        res.status(200).json({
-            message: "Successfully get current user",
+        return res.status(200).json({
+            success: true,
+            message: "Current user fetched successfully",
             user: req.user
-        })
+        });
     } catch (error) {
-        console.log("Error while getting current user", error)
-        res.status(400).json({
+        console.error("Error while getting current user:", error);
+        return res.status(500).json({
+            success: false,
             message: "Error while getting current user"
-        })
+        });
     }
-}
+};
 
 module.exports = {
     registerUser,
