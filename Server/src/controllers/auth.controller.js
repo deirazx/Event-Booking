@@ -202,9 +202,24 @@ const logoutUser = async (req, res) => {
     }
 };
 
+const getCurrentUser = async (req, res) => {
+    try {
+        res.status(200).json({
+            message: "Successfully get current user",
+            user: req.user
+        })
+    } catch (error) {
+        console.log("Error while getting current user", error)
+        res.status(400).json({
+            message: "Error while getting current user"
+        })
+    }
+}
+
 module.exports = {
     registerUser,
     verifyOtpAndRegister,
     loginUser,
-    logoutUser
+    logoutUser,
+    getCurrentUser
 };
