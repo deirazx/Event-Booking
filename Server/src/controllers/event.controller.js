@@ -16,6 +16,14 @@ const createEvent = async (req, res) => {
             imageUrl
         } = req.body;
 
+        // Check if user is authenticated
+        if (!req.user) {
+            return res.status(401).json({
+                success: false,
+                message: "Not authorized. Please log in with an admin account."
+            });
+        }
+
         // Validate required fields
         if (!title || !description || !date || !location || !category || totalSeats === undefined || ticketPrice === undefined || !imageUrl) {
             return res.status(400).json({
