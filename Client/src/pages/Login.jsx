@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../redux/slice';
-import { loginUser } from '../utils/Axios';
+import { loginUser } from '../utils/axios';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
