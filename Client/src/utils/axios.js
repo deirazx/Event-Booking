@@ -41,5 +41,18 @@ export const currentUser = async () => {
     return response.data;
 };
 
+// =======================================================
+// 2. EVENT APIS (/api/events)
+// =======================================================
+
+export const getAllEvents = async () => {
+    const response = await API.get("/events");
+    return response.data
+}
+
+export const getEventById = async (id) => {
+    const response = await API.get(`/events/${id}`);
+    return response.data;
+};
 
 export default API;
