@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUser } from "./redux/slice";
+import { setUser, clearUser } from "./redux/slice";
 import { currentUser } from "./utils/axios";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import EventDetail from "./pages/EventDetail";
+import UserDashboard from "./pages/UserDashboard";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,9 +19,11 @@ function App() {
         const data = await currentUser();
         if (data?.user) {
           dispatch(setUser(data.user));
+        } else {
+          dispatch(clearUser());
         }
       } catch (err) {
-
+        dispatch(clearUser());
       }
     };
     checkAuth();
@@ -35,6 +38,7 @@ function App() {
           <Route path="/events/:id" element={<EventDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<UserDashboard />} />
         </Routes>
       </div>
     </div>
