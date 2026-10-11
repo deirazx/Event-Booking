@@ -42,7 +42,7 @@ export const currentUser = async () => {
 };
 
 // =======================================================
-// 2. EVENT APIS (/api/events)
+// 3. EVENT APIS (/api/events)
 // =======================================================
 
 export const getAllEvents = async () => {
@@ -52,6 +52,45 @@ export const getAllEvents = async () => {
 
 export const getEventById = async (id) => {
     const response = await API.get(`/events/${id}`);
+    return response.data;
+};
+
+export const createEvent = async (eventData) => {
+    const response = await API.post("/events", eventData);
+    return response.data;
+};
+
+export const updateEvent = async (id, eventData) => {
+    const response = await API.put(`/events/${id}`, eventData);
+    return response.data;
+};
+
+export const deleteEvent = async (id) => {
+    const response = await API.delete(`/events/${id}`);
+    return response.data;
+};
+
+// =======================================================
+// 4. BOOKING APIS (/api/bookings)
+// =======================================================
+
+export const myBookings = async () => {
+    const response = await API.get("/bookings/my-bookings");
+    return response.data;
+};
+
+export const createBooking = async (data) => {
+    const response = await API.post("/bookings", data);
+    return response.data;
+};
+
+export const cancelBooking = async (id) => {
+    const response = await API.put(`/bookings/${id}/cancel`);
+    return response.data;
+};
+
+export const getEventBookings = async (eventId) => {
+    const response = await API.get(`/bookings/event/${eventId}`);
     return response.data;
 };
 
