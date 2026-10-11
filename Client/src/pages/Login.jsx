@@ -20,7 +20,11 @@ const Login = () => {
             const result = await loginUser(formData);
             console.log(result);
             dispatch(setUser(result.user));
-            navigate("/")
+            if (result.user?.role === 'admin') {
+                navigate("/admin");
+            } else {
+                navigate("/");
+            }
             setFormData({ email: "", password: "" });
         } catch (error) {
             console.log(error);

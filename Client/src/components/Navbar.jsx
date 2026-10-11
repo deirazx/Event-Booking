@@ -40,19 +40,18 @@ const Navbar = () => {
                         {/* Agar User Logged In Hai */}
                         {isLoggedIn && user ? (
                             <>
-                                {/* User greeting / Role badge */}
                                 <Link to="/dashboard" className="text-gray-300 hover:text-white transition font-medium">
                                     Dashboard
                                 </Link>
-                                {/* <div className="flex items-center gap-2 text-gray-300 text-sm font-medium bg-gray-800 px-3 py-1.5 rounded-full border border-gray-700">
-                                    <FaUserCircle className="text-lg text-gray-400" />
-                                    <span>{user?.name || "Account"}</span>
-                                    {user?.role === 'admin' && (
-                                        <span className="text-[10px] bg-red-600 text-white font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                                            Admin
-                                        </span>
-                                    )}
-                                </div> */}
+
+                                {user?.role === 'admin' && (
+                                    <Link
+                                        to="/admin"
+                                        className="bg-yellow-500 hover:bg-yellow-600 text-black px-3 py-1.5 rounded-md font-bold text-xs uppercase tracking-wider transition shadow-sm"
+                                    >
+                                        Admin Panel
+                                    </Link>
+                                )}
 
                                 {/* Logout Button */}
                                 <button

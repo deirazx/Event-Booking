@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import EventDetail from "./pages/EventDetail";
 import UserDashboard from "./pages/UserDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<UserDashboard />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </div>
     </div>
