@@ -10,13 +10,28 @@ import {
     FaUserCheck,
     FaClock
 } from 'react-icons/fa';
-import { getEventById } from '../utils/axios';
+import { createBooking, getEventById } from '../utils/axios';
 
 const EventDetail = () => {
     const { id } = useParams();
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+
+    const handleClick = async () => {
+        const bookingData = {
+            eventId: event._id || event.id,
+            seatsBooked: 1
+        }
+        try {
+            const result = await createBooking(bookingData);
+            alert("Booking successful!")
+            console.log(result);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -205,6 +220,7 @@ const EventDetail = () => {
 
                             {/* Booking Action Button (Dummy UI) */}
                             <button
+                                onClick={handleClick}
                                 type="button"
                                 className="w-full py-4 px-6 rounded-xl font-bold text-base bg-gray-900 hover:bg-black text-white transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer text-center"
                             >
